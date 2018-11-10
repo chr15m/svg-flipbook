@@ -21,6 +21,8 @@
   (let [input (.. ev -target)
         file (and (.-files input) (aget (.-files input) 0))]
     (read-file file (fn [content]
+                      (when (= (.indexOf content "viewBox") -1)
+                        (js/alert "Warning: SVG has no viewBox.\nScale will be fixed at original size."))
                       (swap! state assoc :file file :last (.-lastModifiedDate file) :svg content)))))
 
 ;; -------------------------
