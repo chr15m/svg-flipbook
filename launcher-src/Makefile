@@ -1,9 +1,11 @@
-../inkscape-animation-assistant.zip: ../inkscape-animation-assistant.exe
-	zip -r $@ ../ -x '*workspace*' '*src*' '*.git/*'
-
-../inkscape-animation-assistant.exe: launch.c iaa.res
+../svg-animation-assistant.exe: launch.c iaa.res
 	i686-w64-mingw32-gcc -o $@ $^ -Wl,-subsystem,windows
 
 iaa.res: iaa.rc
 	i686-w64-mingw32-windres $< -O coff -o $@
+
+zip: ../svg-animation-assistant.zip
+
+../svg-animation-assistant.zip: ../svg-animation-assistant.exe
+	zip -r $@ ../ -x '*workspace*' '*src*' '*.git/*'
 
