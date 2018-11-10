@@ -9,7 +9,7 @@ pom.xml.asc
 resources/public/js
 .rebel_readline_history
 js
-chrome
+chrome-svg-animation-assistant
 /out
 /.repl
 *.log
