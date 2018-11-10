@@ -6,7 +6,7 @@ html {
   box-sizing: inherit;
 }
 
-html, body, #app {
+html, body, #app, #container {
   height: 100%;
   width: 100%;
   overflow: hidden;
@@ -91,7 +91,31 @@ a:hover {
   cursor: pointer;
 }
 
-svg {
+#container {
+  display: block;
+}
+
+#interface {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  left: 0px;
+  bottom: 0px;
+  opacity: 0;
+}
+
+#interface:hover {
+  opacity: 1;
+}
+
+#animation svg {
   max-width: 100vw;
   max-height: 100vh;
+}
+
+svg#play-pause {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  fill: #aaa;
 }
