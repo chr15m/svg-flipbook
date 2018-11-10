@@ -11,3 +11,6 @@ $(BUILD): src/**/** project.clj
 	lein clean
 	lein package
 
+clean:
+	lein clean
+	rm -f $(STATIC) $(BUILD)
