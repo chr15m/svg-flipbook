@@ -3,9 +3,3 @@
 
 iaa.res: iaa.rc
 	i686-w64-mingw32-windres $< -O coff -o $@
-
-zip: ../svg-animation-assistant.zip
-
-../svg-animation-assistant.zip: ../svg-animation-assistant.exe
-	zip -r $@ ../ -x '*workspace*' '*src*' '*.git/*'
-
