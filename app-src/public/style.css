@@ -113,9 +113,25 @@ a:hover {
   max-height: 100vh;
 }
 
+svg.icon {
+  fill: #aaa;
+  width: 64px;
+  height: 64px;
+  cursor: pointer;
+}
+
+svg.icon:hover {
+  fill: #faa;
+}
+
 svg#play-pause {
   position: absolute;
   right: 20px;
   bottom: 20px;
-  fill: #aaa;
+}
+
+svg#close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
 }
