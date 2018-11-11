@@ -1,7 +1,11 @@
-all: ../lib/favicon.ico ../svg-animation-assistant.exe
+all: ../lib/icon.png ../lib/App/AppInfo/Launcher/Splash.jpg ../svg-animation-assistant.exe
 
-../lib/favicon.ico: AppIcon.ico
+../lib/icon.png: icon.png
 	cp $< $@
+
+../lib/App/AppInfo/Launcher/Splash.jpg: splash.svg
+	inkscape -z -e splash.png -w 416 -h 257 $<
+	convert splash.png $@
 
 ../svg-animation-assistant.exe: launch.c iaa.res
 	i686-w64-mingw32-gcc -o $@ $^ -Wl,-subsystem,windows
@@ -16,4 +20,4 @@ icon.png: icon.svg
 	inkscape -z -e $@ -w 256 -h 256 $<
 
 clean:
-	rm -f iaa.res icon.png AppIcon.ico
+	rm -f iaa.res icon.png AppIcon.ico ../lib/icon.png ../lib/App/AppInfo/Launcher/Splash.jpg splash.png
