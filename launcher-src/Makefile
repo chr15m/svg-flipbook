@@ -1,4 +1,4 @@
-all: ../lib/icon.png ../lib/App/AppInfo/Launcher/Splash.jpg ../svg-animation-assistant.exe
+all: ../lib/icon.png ../lib/App/AppInfo/Launcher/Splash.jpg ../lib/App/AppInfo/AppIcon.ico ../svg-animation-assistant.exe
 
 ../lib/icon.png: icon.png
 	cp $< $@
@@ -15,6 +15,9 @@ iaa.res: iaa.rc AppIcon.ico
 
 AppIcon.ico: icon.png
 	convert -background transparent "icon.png" -define icon:auto-resize=16,24,32,48,64,72,96,128,256 "AppIcon.ico"
+
+../lib/App/AppInfo/AppIcon.ico: AppIcon.ico
+	cp $< $@
 
 icon.png: icon.svg
 	inkscape -z -e $@ -w 256 -h 256 $<
