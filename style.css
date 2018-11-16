@@ -1,0 +1,137 @@
+/* apply a natural box layout model to all elements, but allowing components to change */
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+html, body, #app, #container {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Helvetica Neue', Verdana, Helvetica, Arial, sans-serif;
+  margin: 0 auto;
+  -webkit-font-smoothing: antialiased;
+  font-size: 1.125em;
+  color: #333;
+  line-height: 1.5em;
+}
+
+#app {
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+}
+
+h1, h2, h3 {
+  color: #000;
+}
+h1 {
+  font-size: 2.5em
+}
+
+h2 {
+  font-size: 2em
+}
+
+h3 {
+  font-size: 1.5em
+}
+
+a {
+  text-decoration: none;
+  color: #09f;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+#choosefile {
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  margin: 40px;
+  border: 3px dotted #888;
+  text-align: center;
+  background-color: #eee;
+  border-radius: 20px;
+}
+
+#spinner {
+  display: inline-block;
+  width: 128px;
+  height: 128px;
+  animation: spinner 0.3s linear infinite;
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+#choosefile input[type="file"] {
+    display: none;
+}
+
+#choosefile label {
+  cursor: pointer;
+}
+
+#container {
+  display: block;
+}
+
+#interface {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  left: 0px;
+  bottom: 0px;
+  opacity: 0;
+}
+
+#interface:hover {
+  opacity: 1;
+}
+
+#animation svg {
+  max-width: 100vw;
+  max-height: 100vh;
+}
+
+svg.icon {
+  fill: #aaa;
+  width: 64px;
+  height: 64px;
+  cursor: pointer;
+}
+
+svg.icon:hover {
+  fill: #faa;
+}
+
+svg#play-pause {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+}
+
+svg#close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
