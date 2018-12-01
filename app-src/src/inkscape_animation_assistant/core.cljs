@@ -1,6 +1,7 @@
 (ns inkscape-animation-assistant.core
     (:require
-      [reagent.core :as r]))
+      [reagent.core :as r]
+      [inkscape-animation-assistant.animation :refer [animate! flip-layers layers-get-all]]))
 
 (def initial-state
   {:playing false
@@ -31,48 +32,8 @@
                         (js/alert "Warning: SVG has no viewBox.\nScale will be fixed at original size."))
                       (swap! state assoc :file file :last (.-lastModifiedDate file) :svg content)))))
 
-(defn layer-get-delay [layer]
-  (let [default 100]
-    (if layer
-      (let [label (.getAttribute layer "inkscape:label")
-            delayparameter (.match label #"\((\d+)\)")]
-        (if delayparameter (js/parseInt (aget delayparameter 1)) default))
-      default)))
-
-(defn layer-is-static [layer]
-  (when layer
-    (-> layer
-        (.getAttribute "inkscape:label")
-        (.indexOf "tatic")
-        (not= -1))))
-
-(defn layers-get-all []
-  (js/Array.from (.querySelectorAll js/document "[inkscape\\:groupmode='layer']")))
-
-(defn flip-layers [cb layers]
-  (doall
-    (map-indexed
-      (fn [i l]
-        (aset (.-style l) "display"
-              (if (cb i l)
-                ""
-                "none")))
-      layers)))
-
-(defn animate! [state & [frame]]
-  (let [layers (layers-get-all)
-        length (count layers)
-        current-frame (mod (or frame 0) length)
-        layer (aget layers (or current-frame 0))
-        frame-time (layer-get-delay layer)
-        static (layer-is-static layer)]
-    (when (@state :playing)
-      (when (or (not static) (not frame))
-        (flip-layers (fn [i l] (or (= i current-frame) (layer-is-static l))) layers))
-      (js/setTimeout (partial animate! state (+ frame 1)) frame-time))))
-
 (defn play! [state ev]
-  (let [timer (js/setTimeout (partial animate! state) 1)]
+  (let [timer (js/setTimeout (partial animate! #(@state :playing) 0) 1)]
     (swap! state #(-> %
                       (assoc :timer timer)
                       (update-in [:playing] not)))))
