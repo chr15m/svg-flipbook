@@ -1,4 +1,4 @@
-Quickly and easily animate Inkscape SVGs.
+Tool to do flipbook-style SVG animation with layers.
 
 [Buy the Windows program at itch.io](https://thebusiness.itch.io/svg-animation-assistant)
 
@@ -10,7 +10,7 @@ The animation live-reloads in the assistant window whenever you hit save in Inks
 
 ![SVG Animation Assistant interface showing live reloading](./screens/svg-animation-assistant.gif)
 
-Easily customise frame timing and behaviour by editing the layer name:
+Customise the frame time and behaviour by editing the layer name:
 
 ![Inkscape layers UI with customisation](./screens/layers.png)
 
