@@ -9,14 +9,14 @@
       default)))
 
 (defn layer-is-static [layer]
-  (when layer
+  (if layer
     (-> layer
         (.getAttribute "inkscape:label")
         (.indexOf "tatic")
         (not= -1))))
 
 (defn layers-get-all []
-  (js/Array.from (.querySelectorAll js/document "[inkscape\\:groupmode='layer']")))
+  (js/Array.from (.querySelectorAll js/document "svg > g")))
 
 (defn flip-layers [cb layers]
   (doall
@@ -29,13 +29,15 @@
       layers)))
 
 (defn animate! [fn-is-playing? frame]
-  (let [layers (layers-get-all)
+  (let [fn-is-playing? (or fn-is-playing? (fn [] true))
+        layers (layers-get-all)
         length (count layers)
         current-frame (mod (or frame 0) length)
         layer (aget layers (or current-frame 0))
         frame-time (layer-get-delay layer)
         static (layer-is-static layer)]
-    (when (fn-is-playing?)
-      (when (or (not static) (not frame))
-        (flip-layers (fn [i l] (or (= i current-frame) (layer-is-static l))) layers))
-      (js/setTimeout (partial animate! fn-is-playing? (+ frame 1)) frame-time))))
+    (if (fn-is-playing?)
+      (do
+        (if (or (not static) (not frame))
+          (flip-layers (fn [i l] (or (= i current-frame) (layer-is-static l))) layers))
+        (js/setTimeout (partial animate! fn-is-playing? (+ current-frame 1)) frame-time)))))
