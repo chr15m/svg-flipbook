@@ -19,8 +19,8 @@ $(NWJS): $(NWJS).zip
 $(NWJS)/nwjs.app: $(NWJS)
 	touch $@
 
-$(APP): nwjs-v0.14.7-osx-x64/nwjs.app
-	cp -a nwjs-v0.14.7-osx-x64/nwjs.app $@
+$(APP): $(NWJS)/nwjs.app
+	cp -a $(NWJS)/nwjs.app $@
 
 $(APPICON): $(APPDIR)/icon.png
 	png2icns $@ $<
