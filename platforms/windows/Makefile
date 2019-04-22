@@ -1,3 +1,4 @@
+INSTALLER=SVGAnimationAssistant-installer.exe
 ZIP=SVGAnimationAssistant-win.zip
 APP=SVGAnimationAssistant
 APPDIR=app
@@ -6,6 +7,9 @@ APPZIP=$(APP)/app.nw
 NWJS=nwjs-v0.14.7-win-ia32
 EXE=$(APP)/SVGAnimationAssistant.exe
 APPTARGETS=$(APPDIR)/icon.png $(APPDIR)/index.html $(APPDIR)/package.json
+
+$(INSTALLER): $(APPZIP) $(EXE)
+	makensis installer.nsi
 
 $(ZIP): $(APPZIP) $(EXE)
 	zip -q -r $(ZIP) $(APP)
@@ -38,6 +42,7 @@ $(APPDIR)/icon.png: ../icon.png $(APPDIR)
 
 $(APPDIR)/index.html: ../../lib/index.html $(APPDIR)
 	cp -a ../../lib/* $(APPDIR)
+	touch $@
 
 $(APPDIR)/package.json: ../package.json $(APPDIR)
 	cp $< $@
@@ -56,5 +61,5 @@ ResourceHacker.exe:
 .PHONY: clean
 
 clean:
-	rm -rf $(APP) $(ZIP) $(NWJS) $(APPDIR) $(NWJS).zip AppIcon.ico resource_hacker.zip ResourceHacker.*
+	rm -rf $(APP) $(ZIP) $(INSTALLER) $(NWJS) $(APPDIR) $(NWJS).zip AppIcon.ico resource_hacker.zip ResourceHacker.*
 
