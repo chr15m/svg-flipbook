@@ -1,0 +1,19 @@
+{
+  "main": "index.html",
+  "name": "SVG Animation Assistant",
+  "version": "0.1.0",
+  "window": {
+    "title": "SVG Animation Assistant",
+    "icon": "icon.png",
+    "toolbar": true,
+    "frame": true,
+    "width": 500,
+    "height": 700,
+    "position": "mouse",
+    "min_width": 500,
+    "min_height": 500
+  },
+  "webkit": {
+    "plugin": true
+  }
+}
