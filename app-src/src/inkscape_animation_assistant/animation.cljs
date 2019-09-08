@@ -12,7 +12,7 @@
   (if layer
     (-> layer
         (.getAttribute "inkscape:label")
-        (or (js/Array.))
+        (or "")
         (.indexOf "tatic")
         (not= -1))))
 
