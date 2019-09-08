@@ -18,3 +18,7 @@ chrome-svg-animation-assistant
 workspace
 /*.exe
 /*.zip
+node_modules
+package*.json
+.lein-env
+animate*.js
