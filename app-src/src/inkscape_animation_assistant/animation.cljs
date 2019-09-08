@@ -4,7 +4,7 @@
   (let [default 100]
     (if layer
       (let [label (.getAttribute layer "inkscape:label")
-            delayparameter (.match label #"\((\d+)\)")]
+            delayparameter (if label (.match label #"\((\d+)\)") default)]
         (if delayparameter (js/parseInt (aget delayparameter 1)) default))
       default)))
 
@@ -12,6 +12,7 @@
   (if layer
     (-> layer
         (.getAttribute "inkscape:label")
+        (or (js/Array.))
         (.indexOf "tatic")
         (not= -1))))
 
