@@ -1,7 +1,8 @@
 (ns inkscape-animation-assistant.core
-    (:require
-      [reagent.core :as r]
-      [inkscape-animation-assistant.animation :refer [animate! flip-layers layers-get-all]]))
+  (:require
+    [reagent.core :as r]
+    [inkscape-animation-assistant.animation :refer [animate! flip-layers layers-get-all]])
+  (:import goog.crypt.Sha256))
 
 (def initial-state
   {:playing false
@@ -12,25 +13,40 @@
 (defn read-file [file cb]
   (let [reader (js/FileReader.)]
     (aset reader "onload" #(cb (.. % -target -result)))
+    (aset reader "onerror" #(js/console.log "FileReader error" %))
     (.readAsText reader file "utf-8")))
 
 (defn get-file-time [file]
-  (.getTime (.-lastModifiedDate file)))
+  (if file
+    (-> file .-lastModified js/Date. .getTime)
+    0))
+
+(defn sha256 [t]
+  (let [h (goog.crypt.Sha256.)]
+    (.update h t)
+    (.digest h)))
 
 (defn filewatcher [state]
   (let [file (@state :file)
         last-mod (@state :last)]
-    (when (and file (not= (.getTime (.-lastModifiedDate file)) (.getTime last-mod)))
-      (read-file file (fn [content]
-                        (swap! state assoc :svg content))))))
+    (when file
+      (if (aget file "text")
+        ; firefox (lastModified does not update)
+        ; and FileReader produces errors on changed file
+        (.then (.text file) (fn [content]
+                              (let [updated (sha256 content)]
+                                (swap! state assoc :svg content :last updated))))
+        ; chrome - can re-read the modified file without errors
+        (let [updated (get-file-time file)]
+          (when (not= updated last-mod)
+            (read-file file (fn [content]
+                              (swap! state assoc :svg content :last updated)))))))))
 
 (defn file-selected! [state ev]
   (let [input (.. ev -target)
         file (and (.-files input) (aget (.-files input) 0))]
-    (read-file file (fn [content]
-                      (when (= (.indexOf content "viewBox") -1)
-                        (js/alert "Warning: SVG has no viewBox.\nScale will be fixed at original size."))
-                      (swap! state assoc :file file :last (.-lastModifiedDate file) :svg content)))))
+    (js/console.log "Loading:" file)
+    (swap! state assoc :file file)))
 
 (defn play! [state ev]
   (let [timer (js/setTimeout (partial animate! #(@state :playing) 0) 1)]
@@ -71,6 +87,7 @@
       [component-close state]
       [component-play-pause state]]]
     [:div#choosefile
+     (js/console.log "updated file chooser")
      [:div
       [:label 
        [:input#fileinput {:type "file"
@@ -88,5 +105,5 @@
   (r/render [component-app state] (.getElementById js/document "app")))
 
 (defn init! []
-  (js/setInterval (partial #'filewatcher state) 250)
+  (js/setInterval (partial #'filewatcher state) 500)
   (mount-root))
