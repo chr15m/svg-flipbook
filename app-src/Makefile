@@ -1,4 +1,4 @@
-STATIC=../lib/index.html ../lib/style.css
+STATIC=../lib/index.html ../lib/style.css ../lib/animate.min.js
 BUILD=../lib/js/app.js
 
 build: $(BUILD) $(STATIC)
@@ -13,9 +13,8 @@ animate.js: src/inkscape_animation_assistant/animation.cljs ./shims.js node_modu
 public/animate.min.js: animate.js node_modules
 	./node_modules/.bin/uglifyjs animate.js > $@
 
-$(STATIC): public/index.html public/style.css public/animate.min.js
-	cp -av $^ ../lib/
-	touch $@
+../lib/%: public/%
+	cp -v $< $@
 
 $(BUILD): src/**/** project.clj
 	lein clean
