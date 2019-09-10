@@ -1,4 +1,4 @@
-STATIC=../lib/index.html ../lib/style.css ../lib/animate.min.js
+STATIC=../lib/index.html ../lib/style.css ../lib/animate.min.js ../lib/icon.png
 BUILD=../lib/js/app.js
 
 build: $(BUILD) $(STATIC)
