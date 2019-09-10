@@ -101,7 +101,6 @@
       [component-export state animation-script]
       [component-play-pause state]]]
     [:div#choosefile
-     (js/console.log "updated file chooser")
      [:div
       [:label 
        [:input#fileinput {:type "file"
