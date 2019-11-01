@@ -17,7 +17,7 @@
         (not= -1))))
 
 (defn layers-get-all []
-  (js/Array.from (.querySelectorAll js/document "svg > g")))
+  (js/Array.from (.querySelectorAll js/document "#animation svg > g")))
 
 (defn flip-layers [cb layers]
   (doall
