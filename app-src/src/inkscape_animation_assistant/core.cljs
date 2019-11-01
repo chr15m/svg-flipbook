@@ -1,7 +1,8 @@
 (ns inkscape-animation-assistant.core
   (:require
     [reagent.core :as r]
-    [inkscape-animation-assistant.animation :refer [animate! flip-layers layers-get-all]])
+    [inkscape-animation-assistant.animation :refer [animate! flip-layers layers-get-all]]
+    [goog.crypt :refer [byteArrayToHex]])
   (:import goog.crypt.Sha256))
 
 (def initial-state
@@ -24,7 +25,10 @@
 (defn sha256 [t]
   (let [h (goog.crypt.Sha256.)]
     (.update h t)
-    (.digest h)))
+    (->
+      (.digest h)
+      (byteArrayToHex)
+      (.substr 8))))
 
 (defn filewatcher [state]
   (let [file (@state :file)
@@ -36,7 +40,8 @@
         ; and FileReader produces errors on changed file
         (.then (.text file) (fn [content]
                               (let [updated (sha256 content)]
-                                (swap! state assoc :svg content :last updated))))
+                                (when (not= updated last-mod)
+                                  (swap! state assoc :svg content :last updated)))))
         ; chrome - can re-read the modified file without errors
         (let [updated (get-file-time file)]
           (when (not= updated last-mod)
