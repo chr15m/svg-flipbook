@@ -1,17 +1,23 @@
 (ns inkscape-animation-assistant.animation)
 
+(def inkscape-label-re #"\((\d+)\)")
+(def illustrator-label-re #"_x28_(\d+)_x29_")
+
 (defn layer-get-delay [layer]
   (let [default 100]
     (if layer
-      (let [label (.getAttribute layer "inkscape:label")
-            delayparameter (if label (.match label #"\((\d+)\)") default)]
+      (let [label (or (.getAttribute layer "inkscape:label") (.getAttribute layer "id"))
+            delayparameter-inkscape (if label (.match label inkscape-label-re))
+            delayparameter-illustrator (if label (.match label illustrator-label-re))
+            delayparameter (or delayparameter-inkscape delayparameter-illustrator)]
         (if delayparameter (js/parseInt (aget delayparameter 1)) default))
       default)))
 
 (defn layer-is-static [layer]
   (if layer
-    (-> layer
-        (.getAttribute "inkscape:label")
+    (-> (or
+          (.getAttribute layer "inkscape:label")
+          (.getAttribute layer "id"))
         (or "")
         (.indexOf "tatic")
         (not= -1))))
