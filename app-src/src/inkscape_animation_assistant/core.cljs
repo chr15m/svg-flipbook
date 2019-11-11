@@ -71,6 +71,10 @@
       (str "data:image/svg;charset=utf-8," (js/encodeURIComponent export-text))
       "#loading")))
 
+(defn hide-menu [state ev]
+  (swap! state assoc :help true :menu false)
+  (.preventDefault ev))
+
 ;; -------------------------
 ;; Views
 
@@ -101,14 +105,35 @@
        [:svg.icon {:viewBox "0 0 1792 1792"}
         [:path {:d "M1344 1344q0-26-19-45t-45-19-45 19-19 45 19 45 45 19 45-19 19-45zm256 0q0-26-19-45t-45-19-45 19-19 45 19 45 45 19 45-19 19-45zm128-224v320q0 40-28 68t-68 28h-1472q-40 0-68-28t-28-68v-320q0-40 28-68t68-28h465l135 136q58 56 136 56t136-56l136-136h464q40 0 68 28t28 68zm-325-569q17 41-14 70l-448 448q-18 19-45 19t-45-19l-448-448q-31-29-14-70 17-39 59-39h256v-448q0-26 19-45t45-19h256q26 0 45 19t19 45v448h256q42 0 59 39z"}]]]]
      [:li
-      [:a#feedback {:href "mailto:chris@svgflipbook.com?subject=SVGFlipbook%20feedback"} "Send feedback"
+      [:a#feedback {:href "mailto:chris@svgflipbook.com?subject=SVGFlipbook%20feedback"}
+       "Send feedback"
        [:svg.icon {:viewBox "0 0 1792 1792"}
-        [:path {:d "M1792 710v794q0 66-47 113t-113 47h-1472q-66 0-113-47t-47-113v-794q44 49 101 87 362 246 497 345 57 42 92.5 65.5t94.5 48 110 24.5h2q51 0 110-24.5t94.5-48 92.5-65.5q170-123 498-345 57-39 100-87zm0-294q0 79-49 151t-122 123q-376 261-468 325-10 7-42.5 30.5t-54 38-52 32.5-57.5 27-50 9h-2q-23 0-50-9t-57.5-27-52-32.5-54-38-42.5-30.5q-91-64-262-182.5t-205-142.5q-62-42-117-115.5t-55-136.5q0-78 41.5-130t118.5-52h1472q65 0 112.5 47t47.5 113z"}]]]]]))
+        [:path {:d "M1792 710v794q0 66-47 113t-113 47h-1472q-66 0-113-47t-47-113v-794q44 49 101 87 362 246 497 345 57 42 92.5 65.5t94.5 48 110 24.5h2q51 0 110-24.5t94.5-48 92.5-65.5q170-123 498-345 57-39 100-87zm0-294q0 79-49 151t-122 123q-376 261-468 325-10 7-42.5 30.5t-54 38-52 32.5-57.5 27-50 9h-2q-23 0-50-9t-57.5-27-52-32.5-54-38-42.5-30.5q-91-64-262-182.5t-205-142.5q-62-42-117-115.5t-55-136.5q0-78 41.5-130t118.5-52h1472q65 0 112.5 47t47.5 113z"}]]]]
+     [:li
+      [:a#help {:href "#"
+                :on-click (partial hide-menu state)}
+       "Help"
+       [:svg.icon {:viewBox "0 0 1792 1792"}
+        [:path {:d "M1008 1200v160q0 14-9 23t-23 9h-160q-14 0-23-9t-9-23v-160q0-14 9-23t23-9h160q14 0 23 9t9 23zm256-496q0 50-15 90t-45.5 69-52 44-59.5 36q-32 18-46.5 28t-26 24-11.5 29v32q0 14-9 23t-23 9h-160q-14 0-23-9t-9-23v-68q0-35 10.5-64.5t24-47.5 39-35.5 41-25.5 44.5-21q53-25 75-43t22-49q0-42-43.5-71.5t-95.5-29.5q-56 0-95 27-29 20-80 83-9 12-25 12-11 0-19-6l-108-82q-10-7-12-20t5-23q122-192 349-192 129 0 238.5 89.5t109.5 214.5zm-368-448q-130 0-248.5 51t-204 136.5-136.5 204-51 248.5 51 248.5 136.5 204 204 136.5 248.5 51 248.5-51 204-136.5 136.5-204 51-248.5-51-248.5-136.5-204-204-136.5-248.5-51zm768 640q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"}]]]]]))
 
-(defn component-close [state]
+(defn component-close [state close-fn]
   [:svg#close.icon {:viewBox "0 0 1792 1792"
-                    :on-click #(reset! state initial-state)}
+                    :on-click close-fn}
    [:path {:d "M1277 1122q0-26-19-45l-181-181 181-181q19-19 19-45 0-27-19-46l-90-90q-19-19-46-19-26 0-45 19l-181 181-181-181q-19-19-45-19-27 0-46 19l-90 90q-19 19-19 46 0 26 19 45l181 181-181 181q-19 19-19 45 0 27 19 46l90 90q19 19 46 19 26 0 45-19l181-181 181 181q19 19 45 19 27 0 46-19l90-90q19-19 19-46zm387-226q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"}]])
+
+(defn component-help [state]
+  [:div#help-page
+   [component-close state #(swap! state assoc :help nil)]
+   [:div
+    [:h1 "Help"]
+    [:p "You can customize frame timing and behaviour by editing the layer name in your SVG editor."]
+    [:h3 "Frame duration"]
+    [:p "Set the frame duration by entering the number of milliseconds in brackets on the layer name, like `(100)` for a pause of 100ms, or 1/10th of a second."]
+    [:h3 "Static background"]
+    [:p "Set a layer as a static background which will always be visible, by adding the word `(static)` to the layer name."]
+    [:h3 "Embed code"]
+    [:p "Embed the exported SVG in a web page with this code."]
+    [:pre "<object data='FILENAME.svg' type='image/svg+xml'>\n\t<img src='FILENAME.svg' />\n</object>"]]])
 
 (defn component-app [state animation-script]
   (if (@state :file)
@@ -117,9 +142,10 @@
                       :ref #(when % (flip-layers (fn [i l] (or (= i 0))) (layers-get-all)))}]
      [:div#interface
       [component-menu state animation-script]
-      [component-close state]
+      [component-close state #(reset! state initial-state)]
       [component-hamburger state]
-      [component-play-pause state]]]
+      [component-play-pause state]]
+     (when (@state :help) [component-help state])]
     [:div#choosefile
      [:div
       [:label 
