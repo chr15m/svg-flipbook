@@ -31,7 +31,7 @@
       (fn [i l]
         (aset (.-style l) "display"
               (if (cb i l)
-                ""
+                "inline"
                 "none")))
       layers)))
 
