@@ -150,12 +150,15 @@
    [:div
     [:h1 "Help"]
     [:p "You can customize frame timing and behaviour by editing the layer name in your SVG editor."]
+    [:img {:src "layers.png"}]
+    [:p "Add frame commands to the layer name in brackets like '(300)' and '(static)'. See below for frame command details."]
+    [:p "Once you have edited the layer name save your SVG and the changes will appear in the SVG Flipbook app immediately."]
     [:h3 "Frame duration"]
-    [:p "Set the frame duration by entering the number of milliseconds in brackets on the layer name, like `(100)` for a pause of 100ms, or 1/10th of a second."]
+    [:p "Set the frame duration by entering the number of milliseconds in brackets in the layer name, like `(100)` for a pause of 100ms, or 1/10th of a second."]
     [:h3 "Static background"]
     [:p "Set a layer as a static background which will always be visible, by adding the word `(static)` to the layer name."]
     [:h3 "Embed code"]
-    [:p "Embed the exported SVG in a web page with this code."]
+    [:p "Once you have exported your animated SVG you can embed it in a web page with this code:"]
     [:pre "<object data='FILENAME.svg' type='image/svg+xml'>\n\t<img src='FILENAME.svg' />\n</object>"]]])
 
 (defn component-app [state animation-script]
