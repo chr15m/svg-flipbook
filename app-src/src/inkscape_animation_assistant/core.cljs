@@ -2,7 +2,8 @@
   (:require
     [reagent.core :as r]
     [inkscape-animation-assistant.animation :refer [animate! flip-layers layers-get-all]]
-    [goog.crypt :refer [byteArrayToHex]])
+    [goog.crypt :refer [byteArrayToHex]]
+    [oops.core :refer [oget]])
   (:import goog.crypt.Sha256))
 
 (def initial-state
@@ -75,6 +76,28 @@
   (swap! state assoc :help true :menu false)
   (.preventDefault ev))
 
+(defn fit-width-height [div]
+  (js/setTimeout (fn []
+                   (let [svg (.querySelector div "svg")
+                         width (and svg (.getAttribute svg "width"))
+                         height (and svg (.getAttribute svg "height"))
+                         viewBox (when svg (oget svg "viewBox" "baseVal"))]
+                     (js/console.log "fit width height:" svg width height viewBox)
+                     (when (and viewBox (or (nil? width) (> (.indexOf width "%") 0)) (or (nil? height) (> (.indexOf height "%") 0)))
+                       (.setAttribute svg "width" (- (aget viewBox "width") (aget viewBox "x")))
+                       (.setAttribute svg "height" (- (aget viewBox "height") (aget viewBox "y"))))
+                     (when (and height width
+                                (not (> (.indexOf height "%") 0))
+                                (not (> (.indexOf width "%") 0))
+                                (or (nil? viewBox)
+                                                 (= 0
+                                                    (aget viewBox "x")
+                                                    (aget viewBox "x")
+                                                    (aget viewBox "width")
+                                                    (aget viewBox "height"))))
+                       (.setAttribute svg "viewBox" (str "0 0 " width " " height)))))
+                 1))
+
 ;; -------------------------
 ;; Views
 
@@ -139,7 +162,9 @@
   (if (@state :file)
     [:div#container
      [:div#animation {:dangerouslySetInnerHTML {:__html (@state :svg)}
-                      :ref #(when % (flip-layers (fn [i l] (or (= i 0))) (layers-get-all)))}]
+                      :ref #(when %
+                              (fit-width-height %)
+                              (flip-layers (fn [i l] (or (= i 0))) (layers-get-all)))}]
      [:div#interface
       [component-menu state animation-script]
       [component-close state #(reset! state initial-state)]

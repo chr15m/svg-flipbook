@@ -2,6 +2,7 @@
 html {
   box-sizing: border-box;
 }
+
 *, *:before, *:after {
   box-sizing: inherit;
 }
@@ -30,6 +31,7 @@ body {
 h1, h2, h3 {
   color: #000;
 }
+
 h1 {
   font-size: 2.5em
 }
@@ -109,8 +111,15 @@ a:hover {
 }
 
 #animation svg {
-  max-width: 100vw;
-  max-height: 100vh;
+  border: 1px dashed silver;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 95vw;
+  max-height: 95vh;
+  width: unset;
+  height: unset;
 }
 
 svg.icon {
