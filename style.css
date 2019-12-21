@@ -19,6 +19,7 @@ body {
   -webkit-font-smoothing: antialiased;
   font-size: 1.125em;
   color: #333;
+  background-color: #404040
   line-height: 1.5em;
 }
 
@@ -44,30 +45,11 @@ h3 {
   font-size: 1.5em
 }
 
-a {
-  text-decoration: none;
-  color: #09f;
-}
-
 a:hover {
   text-decoration: underline;
 }
 
-#choosefile {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  border: 3px dotted #888;
-  text-align: center;
-  background-color: #eee;
-  border-radius: 20px;
-  width: 90%;
-  height: 90%;
-  max-width: 500px;
-  max-height: 500px;
-  box-sizing: border-box;
-}
+/*** SPINNER ***/
 
 #spinner {
   display: inline-block;
@@ -84,6 +66,8 @@ a:hover {
     transform: rotate(360deg);
   }
 }
+
+/*** ELEMENTS ***/
 
 #choosefile input[type="file"] {
     display: none;
@@ -122,40 +106,7 @@ a:hover {
   height: unset;
 }
 
-svg.icon {
-  fill: #aaa;
-  width: 64px;
-  height: 64px;
-  cursor: pointer;
-}
-
-svg.icon:hover {
-  fill: #faa;
-}
-
-svg#play-pause {
-  position: absolute;
-  right: 20px;
-  bottom: 20px;
-}
-
-svg#close {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-}
-
-svg#hamburger {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-}
-
-/*#export {
-  position: absolute;
-  right: 20px;
-  top: 100px;
-}*/
+/*** HELP ***/
 
 #help-page {
   top: 0px;
@@ -185,45 +136,113 @@ svg#hamburger {
   box-shadow: 0px 0px 10px #555;
 }
 
-#menu {
-  display: block;
-  background-color: #eee;
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  width: 400px;
-  height: 100%;
-  padding: 0px;
-  padding-top: 100px;
-  margin: 0px;
+#help-page svg.icon {
+  fill: #333;
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+  vertical-align: middle;
+  float: right;
 }
 
-#menu li {
-  display: block;
-  text-align: right;
-  padding-right: 20px;
-  margin-bottom: 20px;
-}
-
-#menu li svg {
-}
-
-#menu li a {
-  color: #aaa;
+#help-page button {
+  border: none;
+  border-radius: 3px;
+  background-color: #01C7C7;
+  color: white;
   font-size: 1.5em;
+  font-weight: bold;
+  margin: 1em 0em;
+  padding: 0.25em 1em;
+  float: right;
+}
+
+#help-page a {
+  color: #333;
   font-weight: bold;
 }
 
-#menu li a:hover {
-  color: #faa;
+/*** MENU ***/
+
+#menu {
+  display: block;
+  background-color: #262626;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  width: 100%;
+  padding: 0px;
+  margin: 0px;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  display: flex;
+  align-items: center;
+}
+
+#menu a {
   text-decoration: none;
+  color: #fff;
 }
 
-#menu li a:hover svg.icon {
-  fill: #faa;
+#menu > span {
+  flex-basis: 33%;
 }
 
-#menu li svg {
-  margin-left: 20px;
+#menu > span > span {
+  margin: 10px;
+  display: inline-block;
+}
+
+#menu #buttons {
+  text-align: left;
+}
+
+#menu #buttons > * {
+  text-align: center;
+}
+
+#menu #filename {
+  padding-right: 2em;
+}
+
+#menu #actions {
+  text-align: right;
   vertical-align: middle;
+}
+
+#menu #actions > * {
+  text-align: center;
+  vertical-align: middle;
+}
+
+#menu svg.icon {
+  fill: #fff;
+  width: 1em;
+  height: 1em;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+#menu #logo {
+  width: 48px;
+  margin-left: 20px;
+  margin-right: 20px;
+  vertical-align: middle;
+}
+
+#menu .button {
+  color: white;
+  background-color: #787878;
+  border-radius: 3px;
+  border: none;
+  padding: 0.5em;
+  font-weight: bold;
+  width: 150px;
+  display: inline-block;
+  cursor: pointer;
+}
+
+#menu #pp.button {
+  background-color: #01C7C7;
 }
