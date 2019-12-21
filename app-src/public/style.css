@@ -178,7 +178,6 @@ a:hover {
   text-align: center;
   display: flex;
   align-items: center;
-  padding: 0.5em;
 }
 
 #menu a {
@@ -192,6 +191,7 @@ a:hover {
 
 #menu > span > span {
   margin: 10px;
+  display: inline-block;
 }
 
 #menu #buttons {
