@@ -157,7 +157,7 @@
     [:p "Once you have exported your animated SVG you can embed it in a web page with this code:"]
     [:pre "<object data='FILENAME.svg' type='image/svg+xml'>\n\t<img src='FILENAME.svg' />\n</object>"]
     [:h3 "Feedback"]
-    [:p "Got questions or feedback? " [:a#feedback {:href "mailto:chris@svgflipbook.com?subject=SVGFlipbook%20feedback"} "Send me an email."]]
+    [:p "Got questions or feedback? " [:a#feedback {:href "mailto:chris@svgflipbook.com?subject=SVGFlipbook%20feedback"} "Send me an email"] "."]
     [:button {:on-click #(swap! state assoc :help nil)} "Ok"]]])
 
 (defn component-app [state animation-script]
