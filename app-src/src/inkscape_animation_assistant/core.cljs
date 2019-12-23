@@ -57,7 +57,7 @@
     (swap! state assoc :file file)))
 
 (defn play! [state ev]
-  (let [timer (js/setTimeout (partial animate! #(@state :playing) 0) 1)]
+  (let [timer (js/setTimeout (partial animate! #(@state :playing) 0 "#animation svg > g") 1)]
     (swap! state #(-> %
                       (assoc :timer timer)
                       (update-in [:playing] not)))))

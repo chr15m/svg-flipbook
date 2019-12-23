@@ -22,8 +22,8 @@
         (.indexOf "tatic")
         (not= -1))))
 
-(defn layers-get-all []
-  (js/Array.from (.querySelectorAll js/document "#animation svg > g")))
+(defn layers-get-all [container]
+  (js/Array.from (.querySelectorAll js/document container)))
 
 (defn flip-layers [cb layers]
   (doall
@@ -35,9 +35,9 @@
                 "none")))
       layers)))
 
-(defn animate! [fn-is-playing? frame]
+(defn animate! [fn-is-playing? frame container]
   (let [fn-is-playing? (or fn-is-playing? (fn [] true))
-        layers (layers-get-all)
+        layers (layers-get-all (or container "svg > g"))
         length (count layers)
         current-frame (mod (or frame 0) length)
         layer (aget layers (or current-frame 0))
@@ -47,4 +47,4 @@
       (do
         (if (or (not static) (not frame))
           (flip-layers (fn [i l] (or (= i current-frame) (layer-is-static l))) layers))
-        (js/setTimeout (partial animate! fn-is-playing? (+ current-frame 1)) frame-time)))))
+        (js/setTimeout (partial animate! fn-is-playing? (+ current-frame 1) container) frame-time)))))
