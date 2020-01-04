@@ -108,6 +108,18 @@ a:hover {
 
 /*** HELP ***/
 
+#modal {
+  background-color: #363636;
+  width: 100%;
+  color: white;
+  padding: 5em 1em;
+}
+
+#modal > div {
+  max-width: 600px;
+  margin: auto;
+}
+
 #help-page {
   top: 0px;
   left: 0px;
@@ -145,7 +157,7 @@ a:hover {
   float: right;
 }
 
-#help-page button {
+#help-page button, #modal button {
   border: none;
   border-radius: 3px;
   background-color: #01C7C7;

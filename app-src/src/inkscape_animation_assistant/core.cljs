@@ -11,7 +11,10 @@
    :svg nil
    :last nil
    :menu nil
-   :file nil})
+   :file nil
+   :modal false})
+
+(def animation-layers-selector "#animation svg > g")
 
 (defn read-file [file cb]
   (let [reader (js/FileReader.)]
@@ -54,10 +57,10 @@
   (let [input (.. ev -target)
         file (and (.-files input) (aget (.-files input) 0))]
     (js/console.log "Loading:" file)
-    (swap! state assoc :file file)))
+    (swap! state assoc :file file :modal true)))
 
 (defn play! [state ev]
-  (let [timer (js/setTimeout (partial animate! #(@state :playing) 0 "#animation svg > g") 1)]
+  (let [timer (js/setTimeout (partial animate! #(@state :playing) 0 animation-layers-selector) 1)]
     (swap! state #(-> %
                       (assoc :timer timer)
                       (update-in [:playing] not)))))
@@ -140,6 +143,13 @@
                     :on-click close-fn}
    [:path {:d "M1277 1122q0-26-19-45l-181-181 181-181q19-19 19-45 0-27-19-46l-90-90q-19-19-46-19-26 0-45 19l-181 181-181-181q-19-19-45-19-27 0-46 19l-90 90q-19 19-19 46 0 26 19 45l181 181-181 181q-19 19-19 45 0 27 19 46l90 90q19 19 46 19 26 0 45-19l181-181 181 181q19 19 45 19 27 0 46-19l90-90q19-19 19-46zm387-226q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"}]])
 
+(defn component-modal [state]
+  [:div#modal
+   [:div
+    [:p "Now open " [:strong (when (@state :file) (.-name (@state :file)))] " in your vector graphics editor."]
+    [:p "When you make changes and save your work, the animation will update here."]
+    [:button {:on-click #(swap! state assoc :modal false)} "Ok"]]])
+
 (defn component-help [state]
   [:div#help-page
    [:div
@@ -165,13 +175,15 @@
    [:div#animation {:dangerouslySetInnerHTML {:__html (@state :svg)}
                     :ref #(when %
                             (fit-width-height %)
-                            (flip-layers (fn [i l] (or (= i 0))) (layers-get-all)))}]
+                            (flip-layers (fn [i l] (or (= i 0))) (layers-get-all animation-layers-selector)))}]
    [:div#interface
     (if (or (not (@state :file)) (@state :help))
       {:style {:opacity 1}})
     (if (@state :help)
       [component-help state])
-    [component-menu state animation-script]]])
+    [component-menu state animation-script]
+    (if (@state :modal)
+      [component-modal state])]])
 
 ;; -------------------------
 ;; Initialize app
