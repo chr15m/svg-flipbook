@@ -3,8 +3,7 @@
     [reagent.core :as r]
     [inkscape-animation-assistant.animation :refer [animate! flip-layers layers-get-all]]
     [goog.crypt :refer [byteArrayToHex]]
-    [oops.core :refer [oget]])
-  (:import goog.crypt.Sha256))
+    [oops.core :refer [oget]]))
 
 (def initial-state
   {:playing false
@@ -59,18 +58,18 @@
     (js/console.log "Loading:" file)
     (swap! state assoc :file file :modal true)))
 
-(defn play! [state ev]
+(defn play! [state _ev]
   (let [timer (js/setTimeout (partial animate! #(@state :playing) 0 animation-layers-selector) 1)]
     (swap! state #(-> %
                       (assoc :timer timer)
                       (update-in [:playing] not)))))
 
-(defn pause! [state ev]
+(defn pause! [state _ev]
   (swap! state update-in [:playing] not))
 
 (defn make-export-url [state animation-script]
   (let [svg-text (@state :svg)
-        export-text (if svg-text (.replace svg-text "</svg>" (str "<script>/*svgflipbook*/" (.trim animation-script "\n") "</script>\n</svg>")))]
+        export-text (when svg-text (.replace svg-text "</svg>" (str "<script>/*svgflipbook*/" (.trim animation-script "\n") "</script>\n</svg>")))]
     (if export-text
       (str "data:image/svg;charset=utf-8," (js/encodeURIComponent export-text))
       "#loading")))
@@ -138,7 +137,7 @@
                :on-click (partial hide-menu state)}
       "Help"]]]])
 
-(defn component-close [state close-fn]
+(defn component-close [_state close-fn]
   [:svg#close.icon {:viewBox "0 0 1792 1792"
                     :on-click close-fn}
    [:path {:d "M1277 1122q0-26-19-45l-181-181 181-181q19-19 19-45 0-27-19-46l-90-90q-19-19-46-19-26 0-45 19l-181 181-181-181q-19-19-45-19-27 0-46 19l-90 90q-19 19-19 46 0 26 19 45l181 181-181 181q-19 19-19 45 0 27 19 46l90 90q19 19 46 19 26 0 45-19l181-181 181 181q19 19 45 19 27 0 46-19l90-90q19-19 19-46zm387-226q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"}]])
@@ -175,14 +174,14 @@
    [:div#animation {:dangerouslySetInnerHTML {:__html (@state :svg)}
                     :ref #(when %
                             (fit-width-height %)
-                            (flip-layers (fn [i l] (or (= i 0))) (layers-get-all animation-layers-selector)))}]
+                            (flip-layers (fn [i _l] (= i 0)) (layers-get-all animation-layers-selector)))}]
    [:div#interface
-    (if (or (not (@state :file)) (@state :help))
+    (when (or (not (@state :file)) (@state :help))
       {:style {:opacity 1}})
-    (if (@state :help)
+    (when (@state :help)
       [component-help state])
     [component-menu state animation-script]
-    (if (@state :modal)
+    (when (@state :modal)
       [component-modal state])]])
 
 ;; -------------------------
