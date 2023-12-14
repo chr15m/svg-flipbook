@@ -132,7 +132,10 @@
     (when (@state :file)
       [:span
        [:a#export {:href (make-export-url state animation-script) :download (.replace (.-name (@state :file)) ".svg" "-animated.svg") :id "exportbtn"} "Export"]])
-    [:span
+    [:span.menu
+     [:a#help {:href "https://github.com/chr15m/svg-animation-assistant"
+               :target "_BLANK"}
+      "Source code"]
      [:a#help {:href "#"
                :on-click (partial hide-menu state)}
       "Help"]]]])
@@ -171,10 +174,19 @@
 
 (defn component-app [state animation-script]
   [:div#container
-   [:div#animation {:dangerouslySetInnerHTML {:__html (@state :svg)}
-                    :ref #(when %
-                            (fit-width-height %)
-                            (flip-layers (fn [i _l] (= i 0)) (layers-get-all animation-layers-selector)))}]
+   (if (:svg @state)
+     [:div#animation {:dangerouslySetInnerHTML {:__html (@state :svg)}
+                      :ref #(when %
+                              (fit-width-height %)
+                              (flip-layers (fn [i _l] (= i 0)) (layers-get-all animation-layers-selector)))}]
+     [:div#intro
+      [:div
+       [:h3 "SVG Flipbook"]
+       [:p "SVG Flipbook is an online app for creating flipbook style frame-by-frame animated SVGs."]
+       [:ul
+        [:li "Start by opening the SVG you want to animate in your favourite editor, such as Inkscape."]
+        [:li "Open the same SVG in this app using the 'Open SVG' button to the top left."]
+        [:li "Add layers to your SVG. When you hit save, the animation will update in this window."]]]])
    [:div#interface
     (when (or (not (@state :file)) (@state :help))
       {:style {:opacity 1}})
