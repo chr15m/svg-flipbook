@@ -1,6 +1,6 @@
-Tool to do flipbook-style SVG animation with layers.
+Tool to do flipbook-style SVG animation with layers in Inkscape and other SVG editors.
 
-[![Try it out online](./try.png)](https://svgflipbook.com/)
+## [Try it out online](https://svgflipbook.com/)
 
 ![SVG Animation Assistant interface showing Inkscape and a walk cycle animation](./screens/walk-cycle.gif)
 
