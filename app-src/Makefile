@@ -4,7 +4,7 @@ BUILD=../lib/js/app.js
 build: $(BUILD) $(STATIC)
 
 node_modules:
-	npm i
+	pnpm i --shamefully-hoist
 
 animate.js: src/inkscape_animation_assistant/animation.cljs ./shims.js node_modules
 	cat ./shims.js > $@
