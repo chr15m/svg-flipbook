@@ -3,7 +3,8 @@
     [reagent.core :as r]
     [inkscape-animation-assistant.animation :refer [animate! flip-layers layers-get-all]]
     [goog.crypt :refer [byteArrayToHex]]
-    [oops.core :refer [oget]]))
+    [oops.core :refer [oget]])
+  (:import goog.crypt.Sha256))
 
 (def initial-state
   {:playing false
@@ -27,7 +28,7 @@
     0))
 
 (defn sha256 [t]
-  (let [h (goog.crypt.Sha256.)]
+  (let [h (Sha256.)]
     (.update h t)
     (->
       (.digest h)
