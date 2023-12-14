@@ -133,10 +133,11 @@
     (when (@state :file)
       [:span
        [:a#export {:href (make-export-url state animation-script) :download (.replace (.-name (@state :file)) ".svg" "-animated.svg") :id "exportbtn"} "Export"]])
-    [:span.menu
+    [:span
      [:a#help {:href "https://github.com/chr15m/svg-animation-assistant"
                :target "_BLANK"}
-      "Source code"]
+      "Source"]]
+    [:span.menu
      [:a#help {:href "#"
                :on-click (partial hide-menu state)}
       "Help"]]]])
@@ -166,9 +167,16 @@
     [:p "Set the frame duration by entering the number of milliseconds in brackets in the layer name, like `(100)` for a pause of 100ms, or 1/10th of a second."]
     [:h3 "Static background"]
     [:p "Set a layer as a static background which will always be visible, by adding the word `(static)` to the layer name."]
+    [:h3 "Export"]
+    [:p "Click 'Export' in the top right to export an animated version of your SVG. It uses JavaScript to animate your SVG."]
     [:h3 "Embed code"]
     [:p "Once you have exported your animated SVG you can embed it in a web page with this code:"]
     [:pre "<object data='FILENAME.svg' type='image/svg+xml'>\n\t<img src='FILENAME.svg' />\n</object>"]
+    [:h3 "Source code"]
+    [:p "Get the " [:span
+                    [:a#help {:href "https://github.com/chr15m/svg-animation-assistant"
+                              :target "_BLANK"}
+                     "source code on GitHub"]] "."]
     [:h3 "Feedback"]
     [:p "Got questions or feedback? " [:a#feedback {:href "mailto:chris@svgflipbook.com?subject=SVGFlipbook%20feedback"} "Send me an email"] "."]
     [:button {:on-click #(swap! state assoc :help nil)} "Ok"]]])
